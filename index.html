@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>To-Do Web App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #1e1e2f;
+      color: #fff;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .task-input {
+      margin-bottom: 15px;
+      display: flex;
+      gap: 10px;
+    }
+    input, button {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+    }
+    input[type="text"], input[type="datetime-local"] {
+      flex: 1;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      background: #333;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .done {
+      text-decoration: line-through;
+      color: #aaa;
+    }
+    .actions {
+      float: right;
+    }
+    .actions button {
+      margin-left: 5px;
+      background: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>To-Do App</h1>
+  <div class="task-input">
+    <input type="text" id="taskInput" placeholder="Enter task">
+    <input type="datetime-local" id="taskDate">
+    <button onclick="addTask()">Add</button>
+  </div>
+  <ul id="taskList"></ul>
+
+  <script>
+    function addTask() {
+      const taskText = document.getElementById('taskInput').value;
+      const taskDate = document.getElementById('taskDate').value;
+      if (!taskText) return alert("Enter a task!");
+
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <span>${taskText} <small>(${taskDate})</small></span>
+        <div class="actions">
+          <button onclick="toggleDone(this)">Done</button>
+          <button onclick="editTask(this)">Edit</button>
+          <button onclick="removeTask(this)">Delete</button>
+        </div>
+      `;
+      document.getElementById('taskList').appendChild(li);
+      document.getElementById('taskInput').value = '';
+      document.getElementById('taskDate').value = '';
+    }
+
+    function toggleDone(btn) {
+      btn.parentElement.parentElement.classList.toggle('done');
+    }
+
+    function editTask(btn) {
+      const li = btn.parentElement.parentElement;
+      const text = prompt("Edit your task", li.children[0].innerText.split(' (')[0]);
+      if (text) li.children[0].innerHTML = text;
+    }
+
+    function removeTask(btn) {
+      btn.parentElement.parentElement.remove();
+    }
+  </script>
+</body>
+</html>
